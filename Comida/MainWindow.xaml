@@ -81,7 +81,7 @@
         </Style>
         <!--#endregion-->
 
-        <DataTemplate x:Key="plantillaComida">
+        <DataTemplate x:Key="plantillaComida"> 
             <Border BorderBrush="Black" BorderThickness="1" Background="AliceBlue" Height="300" Width="250" Margin="10">
                 <DockPanel LastChildFill="True">
                     <TextBlock DockPanel.Dock="Top" Style="{StaticResource Tipo}" Text="{Binding Path=Nombre}" TextAlignment="Center" Margin="5"></TextBlock>
