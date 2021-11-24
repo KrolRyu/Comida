@@ -1,0 +1,148 @@
+﻿<Window x:Class="Comida.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Comida"
+        mc:Ignorable="d"
+        Title="Comidas" Height="700" Width="950" MinHeight="500" MinWidth="650" Background="LightBlue">
+    <Window.Resources>
+        <!--#region Estilos-->
+        <Style TargetType="TextBlock" x:Key="Tipo">
+            <Setter Property="FontSize" Value="30"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="Americana">
+                    <Setter Property="FontFamily" Value="Slim Summer"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="Mexicana">
+                    <Setter Property="FontFamily" Value="Taco Salad"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="China">
+                    <Setter Property="FontFamily" Value="Chinese Wok Food St"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Nombre}" Value="Cerdo agridulce">
+                    <Setter Property="FontSize" Value="20"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Bandera">
+            <Setter Property="Width" Value="50"></Setter>
+            <Setter Property="Height" Value="50"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="Americana">
+                    <Setter Property="Source" Value="img/united_states.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="Mexicana">
+                    <Setter Property="Source" Value="img/mexico.png"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Tipo}" Value="China">
+                    <Setter Property="Source" Value="img/china.png"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Image" x:Key="Alerg">
+            <Setter Property="Width" Value="25"></Setter>
+            <Setter Property="Height" Value="25"></Setter>
+            <Setter Property="Visibility" Value="Collapsed"></Setter>
+        </Style>
+
+        <Style TargetType="Image" x:Key="AlergG" BasedOn="{StaticResource Alerg}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Gluten}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Image" x:Key="AlergL" BasedOn="{StaticResource Alerg}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Leche}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Image" x:Key="AlergSu" BasedOn="{StaticResource Alerg}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Sulfitos}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Image" x:Key="AlergSo" BasedOn="{StaticResource Alerg}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Soja}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <!--#endregion-->
+
+        <DataTemplate x:Key="plantillaComida">
+            <Border BorderBrush="Black" BorderThickness="1" Background="AliceBlue" Height="300" Width="250" Margin="10">
+                <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Top" Style="{StaticResource Tipo}" Text="{Binding Path=Nombre}" TextAlignment="Center" Margin="5"></TextBlock>
+                    <Grid DockPanel.Dock="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Style="{StaticResource Bandera}" Grid.Column="0" HorizontalAlignment="Left" Margin="5"></Image>
+                        <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,20,20">
+                            <Image Style="{StaticResource AlergG}" Source="img/gluten.png"></Image>
+                            <Image Style="{StaticResource AlergL}" Source="img/milk.png"></Image>
+                            <Image Style="{StaticResource AlergSu}" Source="img/sulfide.png"></Image>
+                            <Image Style="{StaticResource AlergSo}" Source="img/soybean.png"></Image>
+                        </WrapPanel>
+                    </Grid>
+                    <Image Source="{Binding Path=Imagen}" Stretch="Fill" Margin="10"></Image>
+                </DockPanel>
+            </Border>
+        </DataTemplate>
+
+    </Window.Resources>
+    <Border BorderBrush="Black" BorderThickness="1" Margin="10" Background="White">
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="300"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <ListBox Grid.Column="0" ItemsSource="{Binding Path=Comidas}" ItemTemplate="{StaticResource plantillaComida}" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            <StackPanel Background="LightGray" Grid.Column="1" Margin="10,0,0,0" IsEnabled="False">
+                <TextBlock Margin="10,10,0,0">Nombre del plato</TextBlock>
+                <TextBox Margin="10,0,10,0"></TextBox>
+                <TextBlock Margin="10,10,0,0">Foto del plato</TextBlock>
+                <TextBox Margin="10,0,10,0"></TextBox>
+                <TextBlock Margin="10,10,0,0">Tipo de comida</TextBlock>
+                <ComboBox Margin="10,0,10,0" ItemsSource="{Binding Path=Tipos}" SelectedItem="{Binding Path=Tipos}"></ComboBox>
+                <GroupBox Header="Alérgenos" Margin="10,10,10,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <CheckBox Grid.Row="0" Grid.Column="0" Margin="5">Leche</CheckBox>
+                        <CheckBox Grid.Row="0" Grid.Column="1" Margin="5">Soja</CheckBox>
+                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="5">Gluten</CheckBox>
+                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="5">Sulfitos</CheckBox>
+                    </Grid>
+                </GroupBox>
+                <Button Margin="10,10,200,0" Width="80" Height="20" FontSize="10">Limpiar selección</Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
